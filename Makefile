@@ -3,6 +3,9 @@ CURRENT_REVISION = $(shell git rev-parse --short HEAD)
 BUILD_LDFLAGS = "-s -w -X main.version=$(VERSION) -X main.revision=$(CURRENT_REVISION)"
 VERBOSE_FLAG = $(if $(VERBOSE),-v)
 EXECUTABLE = mdstrip
+ifeq ($(OS),Windows_NT)
+    EXECUTABLE := $(EXECUTABLE).exe
+endif
 
 .PHONY: help
 help: ## Show this help message
