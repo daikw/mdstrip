@@ -50,9 +50,8 @@ func StripMarkdown(input string, opts StripOptions) string {
 
 		// Process the line
 		processed := stripLineMarkdown(line, opts)
-		if processed != "" || line == "" {
-			result = append(result, processed)
-		}
+		// Always append the result, even if it's empty (to preserve blank lines from horizontal rules)
+		result = append(result, processed)
 	}
 
 	// Join and clean up
@@ -96,6 +95,9 @@ func stripLineMarkdown(line string, opts StripOptions) string {
 	// Remove inline code
 	line = regexp.MustCompile("`([^`]+)`").ReplaceAllString(line, "$1")
 
+	// Remove images (must be before links!)
+	line = regexp.MustCompile(`!\[([^\]]*)\]\([^)]+\)`).ReplaceAllString(line, "$1")
+
 	// Handle links
 	if opts.KeepLinks {
 		// Keep both text and URL: [text](url) -> text (url)
@@ -109,14 +111,11 @@ func stripLineMarkdown(line string, opts StripOptions) string {
 	line = regexp.MustCompile(`\[([^\]]+)\]\[[^\]]*\]`).ReplaceAllString(line, "$1")
 	line = regexp.MustCompile(`^\[[^\]]+\]:\s*.*$`).ReplaceAllString(line, "")
 
-	// Remove images
-	line = regexp.MustCompile(`!\[([^\]]*)\]\([^)]+\)`).ReplaceAllString(line, "$1")
-
 	// Remove HTML tags
 	line = regexp.MustCompile(`<[^>]+>`).ReplaceAllString(line, "")
 
 	// Remove escape characters
-	line = regexp.MustCompile(`\\([\\`*_{}\[\]()#+\-.!])`).ReplaceAllString(line, "$1")
+	line = regexp.MustCompile(`\\([\\` + "`" + `*_{}\[\]()#+\-.!])`).ReplaceAllString(line, "$1")
 
 	return strings.TrimSpace(line)
 }
