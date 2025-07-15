@@ -54,19 +54,21 @@ changelog:
       - '^style:'
       - '^refactor:'
 
-brews:
-  - repository:
-      owner: daikw
-      name: homebrew-tap
-      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    directory: Formula
-    homepage: "https://github.com/daikw/mdstrip"
-    description: "Strip Markdown formatting from text"
-    license: "MIT"
-    test: |
-      system "#{bin}/mdstrip", "--version"
-    install: |
-      bin.install "mdstrip"
+# Homebrew tap configuration
+# Uncomment and set HOMEBREW_TAP_GITHUB_TOKEN secret in GitHub to enable
+# brews:
+#   - repository:
+#       owner: daikw
+#       name: homebrew-tap
+#       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+#     directory: Formula
+#     homepage: "https://github.com/daikw/mdstrip"
+#     description: "Strip Markdown formatting from text"
+#     license: "MIT"
+#     test: |
+#       system "#{bin}/mdstrip", "--version"
+#     install: |
+#       bin.install "mdstrip"
 
 release:
   github:
