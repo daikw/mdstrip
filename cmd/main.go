@@ -45,7 +45,7 @@ headers (#), emphasis (**/__ ), code blocks, links, etc.`,
 			},
 			&cli.BoolFlag{
 				Name:    "verbose",
-				Aliases: []string{"v"},
+				Aliases: []string{"V"},
 				Usage:   "Enable verbose logging",
 			},
 		},
