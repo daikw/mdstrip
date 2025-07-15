@@ -12,6 +12,12 @@ Strip Markdown formatting from text while preserving the content.
 
 ## Installation
 
+### Using Homebrew
+
+```bash
+brew install daikw/tap/mdstrip
+```
+
 ### Using Go
 
 ```bash
