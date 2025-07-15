@@ -1,0 +1,93 @@
+run:
+  timeout: 5m
+  tests: true
+  skip-dirs:
+    - vendor
+    - third_party
+  skip-files:
+    - ".*\\.pb\\.go$"
+    - ".*\\.gen\\.go$"
+
+linters:
+  enable:
+    - gofmt
+    - goimports
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - gosimple
+    - ineffassign
+    - typecheck
+    - gosec
+    - bodyclose
+    - dogsled
+    - dupl
+    - funlen
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - godox
+    - gofumpt
+    - goprintffuncname
+    - misspell
+    - nakedret
+    - prealloc
+    - revive
+    - stylecheck
+    - unconvert
+    - unparam
+    - whitespace
+
+linters-settings:
+  gofmt:
+    simplify: true
+  goimports:
+    local-prefixes: github.com/daikw/mdstrip
+  govet:
+    check-shadowing: true
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+  funlen:
+    lines: 100
+    statements: 50
+  gocognit:
+    min-complexity: 20
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+  gocyclo:
+    min-complexity: 15
+  dupl:
+    threshold: 100
+  misspell:
+    locale: US
+  prealloc:
+    simple: true
+    range-loops: true
+    for-loops: true
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - dupl
+        - funlen
+        - gocognit
+        - goconst
+    - text: "exported: exported (type|const|method|function)"
+      linters:
+        - revive
+    - text: "ST1000:"
+      linters:
+        - stylecheck

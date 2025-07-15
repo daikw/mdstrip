@@ -1,0 +1,91 @@
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+
+builds:
+  - id: mdstrip
+    main: ./cmd
+    binary: mdstrip
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+      - arm
+    goarm:
+      - "6"
+      - "7"
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.revision={{.ShortCommit}}
+
+archives:
+  - id: default
+    format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: 'checksums.txt'
+
+changelog:
+  use: github
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^chore:'
+      - '^style:'
+      - '^refactor:'
+
+brews:
+  - repository:
+      owner: daikw
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    folder: Formula
+    homepage: "https://github.com/daikw/mdstrip"
+    description: "Strip Markdown formatting from text"
+    license: "MIT"
+    test: |
+      system "#{bin}/mdstrip", "--version"
+    install: |
+      bin.install "mdstrip"
+
+release:
+  github:
+    owner: daikw
+    name: mdstrip
+  prerelease: auto
+  header: |
+    ## mdstrip {{ .Tag }}
+    
+    Strip Markdown formatting from text files or stdin.
+
+nfpms:
+  - package_name: mdstrip
+    vendor: daikw
+    homepage: https://github.com/daikw/mdstrip
+    maintainer: Daiki Watanabe
+    description: Strip Markdown formatting from text
+    license: MIT
+    formats:
+      - deb
+      - rpm
+      - apk
