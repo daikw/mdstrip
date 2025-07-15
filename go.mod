@@ -1,6 +1,6 @@
 module github.com/daikw/mdstrip
 
-go 1.22
+go 1.21
 
 require (
 	github.com/rs/zerolog v1.34.0

@@ -80,7 +80,11 @@ func handleStrip(ctx context.Context, c *cli.Command) error {
 		if err != nil {
 			return fmt.Errorf("failed to open file %s: %w", filename, err)
 		}
-		defer file.Close()
+		defer func() {
+			if err := file.Close(); err != nil {
+				log.Error().Err(err).Str("file", filename).Msg("Failed to close file")
+			}
+		}()
 		input = file
 		log.Debug().Str("file", filename).Msg("Reading from file")
 	} else {
