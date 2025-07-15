@@ -53,7 +53,7 @@ mdstrip input.md -o output.txt
 - `-o, --output` : Output file (default: stdout)
 - `-l, --keep-links` : Keep link URLs in output
 - `-c, --keep-code` : Keep code block markers
-- `-v, --verbose` : Enable verbose logging
+- `-V, --verbose` : Enable verbose logging
 - `--version` : Show version information
 
 ### Examples
